@@ -7,11 +7,13 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Product, Review } from "@/lib/types"
 import { formatPrice } from "@/lib/utils"
-import { ArrowLeft, Info } from "lucide-react"
+import { ArrowLeft, Info, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import { PopupImage } from "./PopupImage"
 import { ReviewForm } from "./review-form"
 import { ReviewList } from "./review-list"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useState, useEffect } from "react"
 
 interface ProductDetailProps {
   product: Product
@@ -24,6 +26,39 @@ export function ProductDetail({
   reviews,
   reviewsLoading,
 }: ProductDetailProps) {
+  const [error, setError] = useState<string | null>(null)
+  const [isImageError, setIsImageError] = useState(false)
+
+  useEffect(() => {
+    // Simulating possible error checking for product data
+    if (!product) {
+      setError("Product information could not be loaded")
+    } else {
+      setError(null)
+    }
+  }, [product])
+
+  // If there's a critical error, show an error message
+  if (error) {
+    return (
+      <div className="py-8">
+        <Link
+          href="/"
+          className="text-muted-foreground hover:text-foreground mb-8 inline-flex items-center gap-2 text-sm font-medium transition-colors"
+        >
+          <ArrowLeft size={16} />
+          Back to Products
+        </Link>
+
+        <Alert variant="destructive" className="my-8">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </div>
+    )
+  }
+
   return (
     <div className="py-8">
       <Link
@@ -34,8 +69,22 @@ export function ProductDetail({
         Back to Products
       </Link>
 
+      {isImageError && (
+        <Alert variant="warning" className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Image Error</AlertTitle>
+          <AlertDescription>
+            The product image could not be loaded.
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2">
-        <PopupImage src={product.image} alt={product.name} />
+        <PopupImage
+          src={product.image}
+          alt={product.name}
+          onError={() => setIsImageError(true)}
+        />
 
         <div>
           <h1 className="text-3xl font-bold">{product.name}</h1>
@@ -87,7 +136,21 @@ export function ProductDetail({
       <Separator className="my-12" />
 
       <div className="mt-8">
-        <ReviewList reviews={reviews} reviewsLoading={reviewsLoading} />
+        {reviewsLoading ? (
+          <div className="py-8 text-center">
+            <p className="text-muted-foreground">Loading reviews...</p>
+          </div>
+        ) : reviews && reviews.length > 0 ? (
+          <ReviewList reviews={reviews} reviewsLoading={reviewsLoading} />
+        ) : (
+          <Alert className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>No Reviews</AlertTitle>
+            <AlertDescription>
+              Be the first to review this product!
+            </AlertDescription>
+          </Alert>
+        )}
         <ReviewForm productId={product.id} />
       </div>
     </div>

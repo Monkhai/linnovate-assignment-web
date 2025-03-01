@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -17,9 +17,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Star } from "lucide-react"
+import { Star, CheckCircle2, XCircle } from "lucide-react"
 import { auth } from "../../../firebase"
 import { SignInModal } from "@/components/auth/sign-in-modal"
+import usePostReview from "@/lib/queries/usePostReivew"
+import { ClientReview } from "@/lib/types"
 
 const formSchema = z.object({
   reviewTitle: z.string().min(3, {
@@ -29,7 +31,6 @@ const formSchema = z.object({
     message: "Review must be at least 10 characters.",
   }),
   stars: z.number().min(1).max(5),
-  productId: z.number().optional(),
 })
 
 interface ReviewFormProps {
@@ -37,9 +38,16 @@ interface ReviewFormProps {
 }
 
 export function ReviewForm({ productId }: ReviewFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const {
+    mutate: postReivew,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+    reset,
+  } = usePostReview()
 
   // Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,9 +56,52 @@ export function ReviewForm({ productId }: ReviewFormProps) {
       reviewTitle: "",
       reviewContent: "",
       stars: 5,
-      productId,
     },
   })
+
+  useEffect(() => {
+    if (isSuccess) {
+      setTimeout(() => {
+        form.reset()
+        reset()
+        setErrorMessage(null)
+      }, 3000)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess])
+
+  useEffect(() => {
+    if (isError) {
+      // Set a user-friendly error message based on the error
+      if (error instanceof Error) {
+        // Check for specific error types and provide tailored messages
+        if (error.message.includes("network")) {
+          setErrorMessage(
+            "Network error. Please check your internet connection and try again.",
+          )
+        } else if (error.message.includes("permission")) {
+          setErrorMessage(
+            "You don't have permission to post a review. Please sign in with a different account.",
+          )
+        } else if (error.message.includes("already reviewed")) {
+          setErrorMessage("You have already reviewed this product.")
+        } else {
+          setErrorMessage(`Error submitting review: ${error.message}`)
+        }
+      } else {
+        setErrorMessage("An unexpected error occurred. Please try again later.")
+      }
+    } else {
+      setErrorMessage(null)
+    }
+
+    setTimeout(() => {
+      setErrorMessage(null)
+      reset()
+    }, 3000)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError, error])
 
   // Define a submit handler.
   function handleSubmit(values: z.infer<typeof formSchema>) {
@@ -61,20 +112,20 @@ export function ReviewForm({ productId }: ReviewFormProps) {
       return
     }
 
-    setIsSubmitting(true)
+    // Clear any previous errors
+    setErrorMessage(null)
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log(values)
-      setIsSubmitting(false)
-      setIsSuccess(true)
-      form.reset()
+    try {
+      const review: ClientReview = {
+        ...values,
+        productId: productId,
+      }
 
-      // Reset success message after 3 seconds
-      setTimeout(() => {
-        setIsSuccess(false)
-      }, 3000)
-    }, 1000)
+      postReivew(review)
+    } catch (err) {
+      setErrorMessage("Failed to submit your review. Please try again.")
+      console.error("Review submission error:", err)
+    }
   }
 
   const isUserSignedIn = auth.currentUser !== null
@@ -91,11 +142,23 @@ export function ReviewForm({ productId }: ReviewFormProps) {
           )}
         </CardHeader>
         <CardContent>
-          {isSuccess ? (
-            <div className="mb-4 rounded-md bg-green-50 p-4 text-green-700">
-              Thank you! Your review has been submitted successfully.
+          {isSuccess && (
+            <div className="mb-6 flex items-start gap-2 rounded-md border border-green-200 bg-green-50 p-3 dark:border-green-900 dark:bg-green-950">
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-green-600 dark:text-green-400" />
+              <p className="text-sm text-green-800 dark:text-green-300">
+                Thank you! Your review has been submitted successfully.
+              </p>
             </div>
-          ) : null}
+          )}
+
+          {errorMessage && (
+            <div className="mb-6 flex items-start gap-2 rounded-md border border-red-200 bg-red-50 p-3 dark:border-red-900 dark:bg-red-950">
+              <XCircle className="h-5 w-5 shrink-0 text-red-600 dark:text-red-400" />
+              <p className="text-sm text-red-800 dark:text-red-300">
+                {errorMessage}
+              </p>
+            </div>
+          )}
 
           <Form {...form}>
             <form
@@ -170,8 +233,12 @@ export function ReviewForm({ productId }: ReviewFormProps) {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isPending || !isUserSignedIn}
+              >
+                {isPending
                   ? "Submitting..."
                   : isUserSignedIn
                     ? "Submit Review"

@@ -15,6 +15,4 @@ export interface Review {
   stars: number
 }
 
-export type ProductWithReviews = Product & {
-  reviews: Review[]
-}
+export type ClientReview = Omit<Review, "id">

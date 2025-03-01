@@ -1,7 +1,8 @@
-import { Product, Review } from "@/lib/types"
+import { ClientReview, Product, Review } from "@/lib/types"
 import apiClient from "./axios-client"
 import { queryKeyStore } from "../queries/queryKeyStore"
 import { queryClient } from "@/components/providers/QueryProvider"
+import { auth } from "@/firebase"
 
 // Products API
 export const productsApi = {
@@ -29,23 +30,20 @@ export const reviewsApi = {
     return response.data
   },
 
-  // Add a new review
-  create: async (review: Omit<Review, "id">): Promise<Review> => {
-    const response = await apiClient.post("/reviews", review)
+  post: async (review: ClientReview): Promise<Review> => {
+    const curUser = auth.currentUser
+    if (!curUser) {
+      throw Error("User not found")
+    }
+    const tokenId = await curUser.getIdToken()
+    if (!tokenId) {
+      throw Error("Token not found")
+    }
+    const response = await apiClient.post("/reviews", review, {
+      headers: {
+        Authorization: `${tokenId}`,
+      },
+    })
     return response.data
-  },
-
-  // Update a review
-  update: async (
-    id: number,
-    review: Partial<Omit<Review, "id">>,
-  ): Promise<Review> => {
-    const response = await apiClient.patch(`/reviews/${id}`, review)
-    return response.data
-  },
-
-  // Delete a review
-  delete: async (id: number): Promise<void> => {
-    await apiClient.delete(`/reviews/${id}`)
   },
 }
