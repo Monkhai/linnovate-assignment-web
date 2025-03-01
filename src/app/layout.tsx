@@ -2,8 +2,10 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import Link from "next/link"
-import { ShoppingCart, Package } from "lucide-react"
+import { Package } from "lucide-react"
 import QueryProvider from "@/components/providers/QueryProvider"
+import { ThemeProvider } from "@/components/providers/ThemeProvider"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,19 +20,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <QueryProvider>
-            <main className="flex-1">
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                {children}
-              </div>
-            </main>
-          </QueryProvider>
-          <Footer />
-        </div>
+        <ThemeProvider>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <QueryProvider>
+              <main className="flex-1">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  {children}
+                </div>
+              </main>
+            </QueryProvider>
+            <Footer />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   )
@@ -59,12 +63,7 @@ function Header() {
             </nav>
           </div>
           <div className="flex items-center gap-4">
-            <button className="hover:bg-muted relative rounded-full p-2 transition-colors">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="bg-primary text-primary-foreground absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold">
-                0
-              </span>
-            </button>
+            <ThemeToggle />
           </div>
         </div>
       </div>
