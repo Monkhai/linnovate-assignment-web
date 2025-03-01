@@ -18,7 +18,7 @@ import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Star } from "lucide-react"
-import { auth } from "../../../../firebase"
+import { auth } from "../../../firebase"
 import { SignInModal } from "@/components/auth/sign-in-modal"
 
 const formSchema = z.object({

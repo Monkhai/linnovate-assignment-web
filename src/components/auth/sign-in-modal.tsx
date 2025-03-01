@@ -1,5 +1,3 @@
-"use client"
-
 import React from "react"
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { Button } from "@/components/ui/button"
@@ -11,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { auth } from "../../../firebase"
+import { auth } from "@/firebase"
 
 interface SignInModalProps {
   isOpen: boolean

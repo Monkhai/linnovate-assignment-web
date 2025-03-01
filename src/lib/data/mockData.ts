@@ -47,7 +47,7 @@ export const mockProducts: Product[] = [
     price: 129.99,
     created_at: "2023-07-10T13:00:00Z",
     image:
-      "https://images.unsplash.com/photo-1589256469067-ea99122bbdc9?w=500&auto=format&fit=crop&q=60",
+      "https://images.unsplash.com/photo-1558203728-00f45181dd84?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
     description:
       "Voice-controlled smart speaker with rich sound and integrated virtual assistant.",
   },
@@ -57,7 +57,7 @@ export const mockProducts: Product[] = [
     price: 39.99,
     created_at: "2023-10-18T10:30:00Z",
     image:
-      "https://images.unsplash.com/photo-1606908487894-c7e43e64e0e6?w=500&auto=format&fit=crop&q=60",
+      "https://images.unsplash.com/photo-1661961110218-35af7210f803?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
     description:
       "Portable aluminum laptop stand with adjustable height and foldable design.",
   },
@@ -117,7 +117,7 @@ export const mockProducts: Product[] = [
     price: 19.99,
     created_at: "2023-10-10T13:15:00Z",
     image:
-      "https://images.unsplash.com/photo-1577937927133-3a41b88d6cc3?w=500&auto=format&fit=crop&q=60",
+      "https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=500&auto=format&fit=crop&q=60",
     description:
       "Hand-thrown ceramic mug with natural glaze and comfortable handle.",
   },
@@ -150,16 +150,6 @@ export const mockProducts: Product[] = [
       "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=500&auto=format&fit=crop&q=60",
     description:
       "Precision-engineered ballpoint pen with smooth writing action and metal construction.",
-  },
-  {
-    id: 16,
-    name: "Compact Air Purifier",
-    price: 119.99,
-    created_at: "2023-10-25T14:55:00Z",
-    image:
-      "https://images.unsplash.com/photo-1573511860302-28c524075dab?w=500&auto=format&fit=crop&q=60",
-    description:
-      "HEPA air purifier with quiet operation and automatic air quality detection.",
   },
 ]
 
@@ -211,14 +201,6 @@ export const mockReviews: Review[] = [
     reviewContent:
       "Sound quality is good but the voice recognition could be improved. Sometimes struggles with complex commands.",
     stars: 3.5,
-  },
-  {
-    id: 7,
-    productId: 6,
-    reviewTitle: "Sturdy and portable",
-    reviewContent:
-      "This stand is lightweight yet sturdy. Folds easily for travel and provides good airflow for my laptop.",
-    stars: 4,
   },
 ]
 

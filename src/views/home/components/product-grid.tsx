@@ -1,18 +1,19 @@
-import React from "react"
-import { Product } from "@/lib/types"
+"use client"
+import useGetProducts from "@/lib/queries/useGetProducts"
 import { ProductList } from "@/views/product/components/product-list"
 
 interface ProductGridProps {
-  products: Product[]
   title?: string
   description?: string
 }
 
 export function ProductGrid({
-  products,
   title = "Product Catalog",
   description = "Browse our selection of high-quality products. Click on any product to view details and reviews.",
 }: ProductGridProps) {
+  const { data: products } = useGetProducts()
+  console.log(products)
+  if (!products) return <div>Loading...</div>
   return (
     <div className="py-12">
       <div className="mx-auto mb-12 max-w-2xl text-center">
