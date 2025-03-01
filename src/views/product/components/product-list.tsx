@@ -1,6 +1,7 @@
 import React from "react"
 import { Product } from "@/lib/types"
 import { ProductCard } from "./product-card"
+import { PackageSearch } from "lucide-react"
 
 interface ProductListProps {
   products: Product[]
@@ -9,9 +10,12 @@ interface ProductListProps {
 export function ProductList({ products }: ProductListProps) {
   if (products.length === 0) {
     return (
-      <div className="my-12 text-center">
+      <div className="my-16 text-center">
+        <div className="mb-4 flex justify-center">
+          <PackageSearch size={48} className="text-muted-foreground" />
+        </div>
         <h2 className="text-xl font-semibold">No products found</h2>
-        <p className="mt-2 text-gray-600">
+        <p className="text-muted-foreground mt-2">
           Try again later or contact support if this issue persists.
         </p>
       </div>
@@ -19,7 +23,7 @@ export function ProductList({ products }: ProductListProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

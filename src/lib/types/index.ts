@@ -3,6 +3,8 @@ export interface Product {
   name: string
   price: number
   created_at: string
+  image: string
+  description: string
 }
 
 export interface Review {

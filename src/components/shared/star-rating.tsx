@@ -7,6 +7,7 @@ interface StarRatingProps {
   maxStars?: number
   size?: number
   className?: string
+  showValue?: boolean
 }
 
 export function StarRating({
@@ -14,6 +15,7 @@ export function StarRating({
   maxStars = 5,
   size = 16,
   className,
+  showValue = true,
 }: StarRatingProps) {
   const fullStars = Math.floor(rating)
   const hasHalfStar = rating % 1 >= 0.5
@@ -41,7 +43,11 @@ export function StarRating({
           return <Star key={i} size={size} className="text-gray-300" />
         }
       })}
-      <span className="ml-1 text-sm text-gray-600">{rating.toFixed(1)}</span>
+      {showValue && (
+        <span className="ml-1.5 text-sm font-medium text-gray-600">
+          {rating.toFixed(1)}
+        </span>
+      )}
     </div>
   )
 }
