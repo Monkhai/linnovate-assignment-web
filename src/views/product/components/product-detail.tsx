@@ -1,13 +1,12 @@
-import React from "react"
-import Image from "next/image"
-import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 import { ProductWithReviews } from "@/lib/types"
 import { formatPrice } from "@/lib/utils"
-import Link from "next/link"
-import { ReviewList } from "./review-list"
-import { ReviewForm } from "./review-form"
 import { ArrowLeft, ShoppingCart } from "lucide-react"
+import Link from "next/link"
+import { PopupImage } from "./PopupImage"
+import { ReviewForm } from "./review-form"
+import { ReviewList } from "./review-list"
 
 interface ProductDetailProps {
   product: ProductWithReviews
@@ -25,16 +24,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
       </Link>
 
       <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100">
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
-          />
-        </div>
+        <PopupImage src={product.image} alt={product.name} />
 
         <div>
           <h1 className="text-3xl font-bold">{product.name}</h1>

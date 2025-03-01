@@ -1,7 +1,7 @@
 import React from "react"
 import { Product } from "@/lib/types"
-import { ProductCard } from "./product-card"
 import { PackageSearch } from "lucide-react"
+import { ProductCard } from "./product-card"
 
 interface ProductListProps {
   products: Product[]
