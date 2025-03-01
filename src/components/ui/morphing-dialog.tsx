@@ -368,6 +368,7 @@ function MorphingDialogImage({
       className={cn(className)}
       sizes="(max-width: 768px) 100vw, 50vw"
       layoutId={`dialog-img-${uniqueId}`}
+      layout
       style={style}
     />
   )

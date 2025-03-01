@@ -1,8 +1,13 @@
-import { Button } from "@/components/ui/button"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Separator } from "@/components/ui/separator"
 import { Product, Review } from "@/lib/types"
 import { formatPrice } from "@/lib/utils"
-import { ArrowLeft, ShoppingCart } from "lucide-react"
+import { ArrowLeft, Info } from "lucide-react"
 import Link from "next/link"
 import { PopupImage } from "./PopupImage"
 import { ReviewForm } from "./review-form"
@@ -46,10 +51,36 @@ export function ProductDetail({
 
           <Separator className="my-6" />
 
-          <Button size="lg" className="w-full">
-            <ShoppingCart size={18} className="mr-2" />
-            Add to Cart
-          </Button>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="specifications">
+              <AccordionTrigger className="text-md font-medium">
+                <div className="flex items-center">
+                  <Info size={18} className="mr-2" />
+                  Product Specifications
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="text-muted-foreground space-y-2 pt-2">
+                  <div className="flex justify-between">
+                    <span className="font-medium">Material</span>
+                    <span>Premium Quality</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Dimensions</span>
+                    <span>Varies by model</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Warranty</span>
+                    <span>1 Year</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Origin</span>
+                    <span>Designed in USA</span>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </div>
 
