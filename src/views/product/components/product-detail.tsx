@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { ProductWithReviews } from "@/lib/types"
+import { Product, Review } from "@/lib/types"
 import { formatPrice } from "@/lib/utils"
 import { ArrowLeft, ShoppingCart } from "lucide-react"
 import Link from "next/link"
@@ -9,10 +9,16 @@ import { ReviewForm } from "./review-form"
 import { ReviewList } from "./review-list"
 
 interface ProductDetailProps {
-  product: ProductWithReviews
+  product: Product
+  reviews: Review[] | undefined
+  reviewsLoading: boolean
 }
 
-export function ProductDetail({ product }: ProductDetailProps) {
+export function ProductDetail({
+  product,
+  reviews,
+  reviewsLoading,
+}: ProductDetailProps) {
   return (
     <div className="py-8">
       <Link
@@ -50,7 +56,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
       <Separator className="my-12" />
 
       <div className="mt-8">
-        <ReviewList reviews={product.reviews} />
+        <ReviewList reviews={reviews} reviewsLoading={reviewsLoading} />
         <ReviewForm productId={product.id} />
       </div>
     </div>

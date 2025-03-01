@@ -1,18 +1,27 @@
-import React from "react"
+"use client"
+import useGetProduct from "@/lib/queries/useGetProduct"
+import useGetProductReviews from "@/lib/queries/useGetProductReviews"
+import { notFound, useParams } from "next/navigation"
 import { ProductDetail } from "./components/product-detail"
-import { getProductWithReviews } from "@/lib/data/mockData"
-import { notFound } from "next/navigation"
 
-interface ProductViewProps {
-  productId: number
-}
+export function ProductView() {
+  const { id } = useParams<{ id: string }>()
+  const { data: product, isLoading: productLoading } = useGetProduct(id)
+  const { data: reviews, isLoading } = useGetProductReviews(id)
 
-export function ProductView({ productId }: ProductViewProps) {
-  const product = getProductWithReviews(productId)
+  if (productLoading) {
+    return <div>Loading...</div>
+  }
 
   if (!product) {
     notFound()
   }
 
-  return <ProductDetail product={product} />
+  return (
+    <ProductDetail
+      product={product}
+      reviews={reviews}
+      reviewsLoading={isLoading}
+    />
+  )
 }

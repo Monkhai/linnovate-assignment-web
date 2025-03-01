@@ -1,34 +1,31 @@
 import { Product, Review } from "@/lib/types"
 import apiClient from "./axios-client"
+import { queryKeyStore } from "../queries/queryKeyStore"
+import { queryClient } from "@/components/providers/QueryProvider"
 
 // Products API
 export const productsApi = {
-  // Get all products
   getAll: async (): Promise<Product[]> => {
     const response = await apiClient.get("/products")
     return response.data
   },
-
-  // Get a single product by ID
-  getById: async (id: number): Promise<Product> => {
-    const response = await apiClient.get(`/products/${id}`)
-    return response.data
-  },
-
-  // Get a product with its reviews
-  getWithReviews: async (
-    id: number,
-  ): Promise<Product & { reviews: Review[] }> => {
-    const response = await apiClient.get(`/products/${id}?_embed=reviews`)
-    return response.data
+  getProduct: async (productId: string): Promise<Product | undefined> => {
+    const key = queryKeyStore.products()
+    let products = queryClient.getQueryData<Product[] | undefined>(key)
+    if (!products) {
+      products = await productsApi.getAll()
+    }
+    const product = products.find((p) => p.id === Number(productId))
+    return product
   },
 }
 
 // Reviews API
 export const reviewsApi = {
-  // Get reviews for a product
-  getByProduct: async (productId: number): Promise<Review[]> => {
-    const response = await apiClient.get(`/reviews?productId=${productId}`)
+  getByProduct: async (productId: string): Promise<Review[]> => {
+    const response = await apiClient.get<Review[]>(
+      `/products/${productId}/reviews`,
+    )
     return response.data
   },
 

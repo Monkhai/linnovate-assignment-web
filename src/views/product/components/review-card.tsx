@@ -22,34 +22,33 @@ export function ReviewCard({ review }: ReviewCardProps) {
   const avatarColor = colors[colorIndex]
 
   return (
-    <Card className="mb-5 overflow-hidden">
-      <CardHeader className="bg-muted/50 pb-2">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div
-              className={`flex h-8 w-8 items-center justify-center rounded-full text-white ${avatarColor}`}
-            >
-              <User size={16} />
+    <Card className="overflow-hidden p-0">
+      <CardContent className="p-0">
+        <CardHeader className="bg-muted/50 py-4">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div
+                className={`flex h-8 w-8 items-center justify-center rounded-full text-white ${avatarColor}`}
+              >
+                <User size={16} />
+              </div>
+              <div className="flex flex-col gap-1">
+                <h4 className="leading-none font-semibold">
+                  {review.reviewTitle}
+                </h4>
+              </div>
             </div>
-            <div>
-              <h4 className="leading-none font-semibold">
-                {review.reviewTitle}
-              </h4>
-              <StarRating
-                rating={review.stars}
-                className="mt-1.5"
-                size={14}
-                showValue={false}
-              />
-            </div>
+            <StarRating
+              rating={review.stars}
+              className="mt-1.5"
+              size={14}
+              showValue={false}
+            />
           </div>
-          <div className="text-muted-foreground text-xs">
-            Review #{review.id}
-          </div>
+        </CardHeader>
+        <div className="p-4">
+          <p className="text-sm leading-relaxed">{review.reviewContent}</p>
         </div>
-      </CardHeader>
-      <CardContent className="pt-4">
-        <p className="text-sm leading-relaxed">{review.reviewContent}</p>
       </CardContent>
     </Card>
   )

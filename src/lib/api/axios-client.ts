@@ -16,35 +16,7 @@ const apiClient = axios.create({
     "Content-Type": "application/json",
   },
   timeout: 10000, // 10 seconds
-  withCredentials: true, // Important for CORS with credentials
+  withCredentials: true,
 })
-
-// Request interceptor
-apiClient.interceptors.request.use(
-  (config) => {
-    // You can add auth token or other headers here
-    console.log(`Making request to: ${config.baseURL}${config.url}`)
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  },
-)
-
-// Response interceptor
-apiClient.interceptors.response.use(
-  (response) => {
-    return response
-  },
-  (error) => {
-    // Handle common errors here (like 401, 403, 500, etc.)
-    console.error("API Error:", error.message)
-    if (error.response) {
-      console.error("Status:", error.response.status)
-      console.error("Data:", error.response.data)
-    }
-    return Promise.reject(error)
-  },
-)
 
 export default apiClient
