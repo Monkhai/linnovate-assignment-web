@@ -1,64 +1,19 @@
-# Product Catalog & Reviews Application
+# Prerequisites
 
-A minimalist product catalog application where users can browse products and add reviews. Built with Next.js and React, featuring a clean, responsive UI.
+Before running this project, you'll need to have the following tools installed:
 
-## Features
+## 1. Bun
 
-- **Homepage**: Displays a list of products with essential details
-- **Product Detail Page**: Shows detailed product information and existing reviews
-- **Review System**: Allows users to submit reviews with ratings
-- **Responsive Design**: Ensures a good experience across devices
-
-## Tech Stack
-
-- **Frontend**: Next.js, React, TypeScript
-- **Styling**: Tailwind CSS with Shadcn UI components
-- **Form Handling**: React Hook Form with Zod validation
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18 or higher
-- Bun (recommended) or npm
+Bun is required to run the project.
 
 ### Installation
 
-1. Clone the repository
-2. Install dependencies:
+- **Mac**: [Download Bun for Mac](https://bun.sh/docs/installation)
+- **Windows**: [Download Bun for Windows](https://bun.sh/docs/installation)
+- **Linux**: Follow the [Bun installation instructions](https://bun.sh/docs/installation)
+
+## Run the project locally
 
 ```bash
-bun install
-# or
-npm install
+bun run dev
 ```
-
-3. Start the development server:
-
-```bash
-bun dev
-# or
-npm run dev
-```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Project Structure
-
-- `src/app`: Next.js pages and routes
-- `src/components`: Reusable UI components
-  - `product`: Product-related components
-  - `review`: Review-related components
-  - `ui`: Shadcn UI components
-- `src/lib`: Utility functions and types
-  - `data`: Mock data for development
-  - `types`: TypeScript type definitions
-  - `utils.ts`: Utility functions
-
-## Backend Integration
-
-Currently, the application uses mock data for development purposes. The data can be easily replaced with real API calls once the backend is ready.
-
-## Deployment
-
-This Next.js application can be deployed on platforms like Vercel, Netlify, or any other hosting service that supports Node.js.
