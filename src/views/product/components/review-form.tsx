@@ -233,11 +233,7 @@ export function ReviewForm({ productId }: ReviewFormProps) {
                   </FormItem>
                 )}
               />
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isPending || !isUserSignedIn}
-              >
+              <Button type="submit" className="w-full" disabled={isPending}>
                 {isPending
                   ? "Submitting..."
                   : isUserSignedIn
