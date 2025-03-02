@@ -1,14 +1,13 @@
 import {
   MorphingDialog,
-  MorphingDialogTrigger,
-  MorphingDialogContent,
   MorphingDialogClose,
-  MorphingDialogImage,
   MorphingDialogContainer,
+  MorphingDialogContent,
+  MorphingDialogTrigger,
 } from "@/components/ui/morphing-dialog"
 import { XIcon } from "lucide-react"
-import { useState } from "react"
 import Image from "next/image"
+import { useState } from "react"
 
 interface PopupImageProps {
   src: string
@@ -46,7 +45,7 @@ export function PopupImage({ src, alt, onError }: PopupImageProps) {
     >
       <MorphingDialogTrigger>
         <div className="relative aspect-square w-full overflow-hidden rounded-xl">
-          <img
+          <Image
             src={src}
             alt={alt}
             className="h-full w-full rounded-xl object-cover"
@@ -57,7 +56,7 @@ export function PopupImage({ src, alt, onError }: PopupImageProps) {
       <MorphingDialogContainer>
         <MorphingDialogContent className="relative">
           <div className="relative h-auto w-full max-w-[90vw] rounded-xl lg:h-[90vh]">
-            <img
+            <Image
               src={src}
               alt={alt}
               className="h-full w-full rounded-xl object-cover"
